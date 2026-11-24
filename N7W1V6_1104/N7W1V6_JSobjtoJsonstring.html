@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <title>JSON fájl készítése - JavaScript-ben</title>
+</head>
+<body>
+    <h1>JSON fájl készítése - JavaScript-ben</h1>
+    <p>JSON:</p>
+    <p id="jsonKimeno"></p>
+
+    <script>
+        const jsObjektum = [
+            { "Név": "HTML5", "kiterjesztes": ".html" },
+            { "Név": "CSS3", "kiterjesztes": ".css" },
+            { "Név": "JavaScript", "kiterjesztes": ".js" }
+        ];
+
+        const jsonSzoveg = JSON.stringify(jsObjektum);
+        document.getElementById("jsonKimeno").textContent = jsonSzoveg;
+    </script>
+</body>
+</html>

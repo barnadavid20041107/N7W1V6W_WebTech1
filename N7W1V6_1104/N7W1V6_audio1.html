@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <title>Audió lejátszó 1 - N7W1V6</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f6f8;
+            color: #222;
+        }
+        header {
+            background-color: #264653;
+            color: #fff;
+            padding: 16px 24px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+        main {
+            background-color: #fff;
+            padding: 20px 24px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+        }
+        .sor {
+            margin: 12px 0;
+        }
+        button {
+            padding: 8px 14px;
+            margin-right: 6px;
+            margin-bottom: 6px;
+            background-color: #c8def8;
+            border: 1px solid #6c8ebf;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        footer {
+            margin-top: 20px;
+            padding: 14px 24px;
+            background-color: #e3e8ee;
+            border-radius: 6px;
+            border-top: 3px solid #264653;
+        }
+        footer a {
+            color: #264653;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Kedvenc zene vezérlése - N7W1V6</h1>
+    </header>
+
+    <main>
+        <audio id="kedvencZene" controls>
+            <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+            A böngésző nem támogatja a HTML5 audio elemet.
+        </audio>
+        <audio id="yesHang" src="yes.mp3"></audio>
+        <audio id="noHang" src="no.mp3"></audio>
+
+        <div class="sor">
+            <button type="button" title="Lejátszás / Szünet" onclick="lejatszasSzunet()">&#9199;</button>
+            <button type="button" title="Pozitív" onclick="effekt('yesHang')">&#128077;</button>
+            <button type="button" title="Negatív" onclick="effekt('noHang')">&#128078;</button>
+        </div>
+
+        <div class="sor">
+            <button type="button" title="Néma" onclick="zene.volume = 0">&#128263;</button>
+            <button type="button" title="Halk" onclick="zene.volume = 0.25">&#128265;</button>
+            <button type="button" title="Hangos" onclick="zene.volume = 1">&#128266;</button>
+
+            <button type="button" title="Normál sebesség" onclick="zene.playbackRate = 1">&#9201;</button>
+            <button type="button" title="Nagyon lassú" onclick="zene.playbackRate = 0.5">&#9194;</button>
+            <button type="button" title="Lassú" onclick="zene.playbackRate = 0.75">&#9655;</button>
+            <button type="button" title="Gyorsabb" onclick="zene.playbackRate = 1.5">&#9193;</button>
+            <button type="button" title="Nagyon gyors" onclick="zene.playbackRate = 2">&#9193;&#9193;</button>
+        </div>
+
+        <div class="sor">
+            <button type="button" title="Befejeződött-e" onclick="alert('Befejeződött-e: ' + (zene.ended ? 'Igen' : 'Nem'))">&#10003;</button>
+            <button type="button" title="Audió hossza (mp)" onclick="alert('Hossz (mp): ' + (isNaN(zene.duration) ? 0 : zene.duration.toFixed(2)))">&#9202;</button>
+            <button type="button" title="Jelenlegi pozíció" onclick="alert('Pozíció (mp): ' + zene.currentTime.toFixed(2))">&#128336;</button>
+            <button type="button" title="Ugrás másfél perchez" onclick="zene.currentTime = 90">90</button>
+        </div>
+    </main>
+
+    <footer>
+        <p>Forrás megjelölése: <a href="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" target="_blank">SoundHelix Song 1 (MP3)</a> | <a href="http://www.w3schools.com/html/html5_audio.asp" target="_blank">W3Schools HTML5 Audio</a></p>
+    </footer>
+
+    <script>
+        const zene = document.getElementById("kedvencZene");
+
+        zene.addEventListener("ended", function () {
+            alert("VÉGE");
+        });
+
+        function lejatszasSzunet() {
+            if (zene.paused) {
+                zene.play();
+            } else {
+                zene.pause();
+            }
+        }
+
+        function effekt(id) {
+            const h = document.getElementById(id);
+            h.currentTime = 0;
+            h.play();
+        }
+    </script>
+</body>
+</html>

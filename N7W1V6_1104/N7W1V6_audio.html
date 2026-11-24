@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <title>Audió - zene, hang - lejátszása_N7W1V6</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f6f8;
+            color: #222;
+        }
+        header {
+            background-color: #1f3c58;
+            color: #fff;
+            padding: 16px 24px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+        main {
+            background-color: #fff;
+            padding: 20px 24px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+        }
+        .vez-sor {
+            margin: 12px 0;
+        }
+        button {
+            padding: 6px 12px;
+            margin-right: 6px;
+            margin-bottom: 6px;
+            cursor: pointer;
+        }
+        footer {
+            margin-top: 20px;
+            padding: 14px 24px;
+            background-color: #e3e8ee;
+            border-radius: 6px;
+            border-top: 3px solid #1f3c58;
+        }
+        footer a {
+            color: #1f3c58;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Audió - zene, hang - lejátszása_N7W1V6</h1>
+    </header>
+
+    <main>
+        <audio id="zene" controls>
+            <source src="jazzy.mp3" type="audio/mpeg">
+            A böngésző nem támogatja a HTML5 audio elemet.
+        </audio>
+        <audio id="effektYes" src="yes.mp3"></audio>
+        <audio id="effektNo" src="no.mp3"></audio>
+
+        <div class="vez-sor">
+            <button type="button" onclick="lejatszasSzunet()">lejátszás / szünet</button>
+            <button type="button" onclick="effektLejatszas('effektYes')">pozitív</button>
+            <button type="button" onclick="effektLejatszas('effektNo')">negatív</button>
+        </div>
+
+        <div class="vez-sor">
+            <button type="button" onclick="hangeroBeallit(0)">néma</button>
+            <button type="button" onclick="hangeroBeallit(0.25)">halk</button>
+            <button type="button" onclick="hangeroBeallit(1)">hangos</button>
+
+            <button type="button" onclick="sebessegBeallit(0.5)">nagyon lassú</button>
+            <button type="button" onclick="sebessegBeallit(0.75)">lassú</button>
+            <button type="button" onclick="sebessegBeallit(1)">normál</button>
+            <button type="button" onclick="sebessegBeallit(1.5)">gyorsabb</button>
+            <button type="button" onclick="sebessegBeallit(2)">nagyon gyors</button>
+        </div>
+
+        <div class="vez-sor">
+            <button type="button" onclick="allapotInfo()">befejeződött-e</button>
+            <button type="button" onclick="hosszInfo()">audió hossza (mp)</button>
+            <button type="button" onclick="pozicioInfo()">jelenlegi pozíció</button>
+            <button type="button" onclick="ugrasMasfelPerc()">ugrás másfél perchez</button>
+        </div>
+    </main>
+
+    <footer>
+        <p>Forrás: <a href="http://www.w3schools.com/html/html5_audio.asp" target="_blank">http://www.w3schools.com/html/html5_audio.asp</a></p>
+    </footer>
+
+    <script>
+        const zene = document.getElementById("zene");
+
+        zene.addEventListener("ended", function () {
+            alert("VÉGE");
+        });
+
+        function lejatszasSzunet() {
+            if (zene.paused) {
+                zene.play();
+            } else {
+                zene.pause();
+            }
+        }
+
+        function effektLejatszas(id) {
+            const effekt = document.getElementById(id);
+            effekt.currentTime = 0;
+            effekt.play();
+        }
+
+        function hangeroBeallit(ertek) {
+            zene.volume = ertek;
+        }
+
+        function sebessegBeallit(ertek) {
+            zene.playbackRate = ertek;
+        }
+
+        function allapotInfo() {
+            alert("Befejeződött-e: " + (zene.ended ? "Igen" : "Nem"));
+        }
+
+        function hosszInfo() {
+            const hossz = isNaN(zene.duration) ? 0 : zene.duration.toFixed(2);
+            alert("Audió hossza (mp): " + hossz);
+        }
+
+        function pozicioInfo() {
+            alert("Jelenlegi pozíció (mp): " + zene.currentTime.toFixed(2));
+        }
+
+        function ugrasMasfelPerc() {
+            zene.currentTime = 90;
+        }
+    </script>
+</body>
+</html>
