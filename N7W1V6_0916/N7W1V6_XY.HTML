@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <title>SZÓKIRAKÓ JÁTÉK</title>
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #f4f6f9; color: #222222; margin: 0; padding: 20px;">
+    <div style="max-width: 760px; margin: 0 auto; background-color: #ffffff; padding: 24px; border: 1px solid #cccccc; border-radius: 8px;">
+        <h1 style="text-align: center; color: #1f3a52; margin-top: 0;">SZÓKIRAKÓ JÁTÉK</h1>
+
+        <p style="line-height: 1.5; text-align: justify;">
+            Adott egy 4*9-es négyzetháló. A program megad egy a négyzetháló feletti képhez kapcsolódó szót vagy mondatot, majd ennek betűit összekeverve elhelyezi ebben a négyzethálóban. A játékos feladata az, hogy az összekevert betűkből kirakja a szót vagy mondatot a kijelölt helyen. A betűket vízszintes vagy függőleges irányban egyenként lehet mozgatni. Ha a betű útját elállja egy másik betű, akkor az csak a másik betűig tolódik el. Miután sikerült a betűket a megfelelő helyre mozgatni, a program ezt jelzi, ha viszont valamely betűket felcseréltük, akkor azokra színkiemeléssel hívja fel a figyelmünket.
+        </p>
+
+        <div style="text-align: center; margin: 16px 0; padding: 12px; border: 1px dashed #888888; background-color: #fafafa;">
+            <div id="kep-hely" style="font-weight: bold; color: #444444; margin-bottom: 8px;">Kép helye (a feladványhoz kapcsolódó kép)</div>
+            <div id="cel-szo" style="font-size: 20px; font-weight: bold; letter-spacing: 6px; color: #0b5394;">HÁROMSZÖG</div>
+        </div>
+
+        <div style="text-align: center; margin-bottom: 14px;">
+            <span style="font-weight: bold;">Kijelölt hely:</span>
+            <span id="kijelolt-hely" style="display: inline-block; min-width: 240px; padding: 6px 12px; border: 2px solid #1f3a52; background-color: #eef4fa; font-weight: bold; letter-spacing: 4px;"></span>
+        </div>
+
+        <table id="racs" style="border-collapse: collapse; margin: 0 auto;"></table>
+
+        <div id="allapot" style="text-align: center; margin-top: 16px; font-weight: bold; font-size: 16px; min-height: 24px;"></div>
+
+        <div style="text-align: center; margin-top: 14px;">
+            <button type="button" onclick="ujJatek()" style="padding: 8px 18px; font-size: 14px; font-weight: bold; background-color: #1f3a52; color: #ffffff; border: none; border-radius: 4px; cursor: pointer;">Új játék</button>
+        </div>
+
+        <hr style="margin: 24px 0; border: 0; border-top: 1px solid #dddddd;">
+
+        <p style="margin: 6px 0;">
+            Derékszögű háromszögben igaz Pitagorasz tétele:
+            <strong style="font-size: 16px;">a<sup style="font-size: smaller;">2</sup> + b<sup style="font-size: smaller;">2</sup> = c<sup style="font-size: smaller;">2</sup></strong>
+        </p>
+        <p style="margin: 6px 0;">
+            Általános háromszögek esetén is igaz:
+            <strong style="font-size: 16px;">&alpha; + &beta; + &gamma; = 180<sup style="font-size: smaller;">&deg;</sup></strong>
+        </p>
+    </div>
+
+    <script>
+        const SOROK = 4;
+        const OSZLOPOK = 9;
+        const CEL_SZO = "HÁROMSZÖG";
+        let racs = [];
+        let kivalasztott = null;
+
+        function ujJatek() {
+            racs = Array.from({ length: SOROK }, () => Array(OSZLOPOK).fill(""));
+            const betuk = CEL_SZO.split("");
+            const poziciok = [];
+            for (let r = 0; r < SOROK; r++) {
+                for (let c = 0; c < OSZLOPOK; c++) {
+                    poziciok.push([r, c]);
+                }
+            }
+            for (let i = poziciok.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [poziciok[i], poziciok[j]] = [poziciok[j], poziciok[i]];
+            }
+            betuk.forEach((b, idx) => {
+                const [r, c] = poziciok[idx];
+                racs[r][c] = b;
+            });
+            kivalasztott = null;
+            megjelenit();
+        }
+
+        function kivalasztVagyMozgat(r, c) {
+            if (!kivalasztott) {
+                if (racs[r][c] !== "") {
+                    kivalasztott = { r, c };
+                    megjelenit();
+                }
+                return;
+            }
+
+            const sr = kivalasztott.r;
+            const sc = kivalasztott.c;
+
+            if (sr === r && sc === c) {
+                kivalasztott = null;
+                megjelenit();
+                return;
+            }
+
+            if (sr === r || sc === c) {
+                const betu = racs[sr][sc];
+                racs[sr][sc] = "";
+                let celR = sr;
+                let celC = sc;
+
+                if (sr === r) {
+                    const irany = c > sc ? 1 : -1;
+                    for (let nc = sc + irany; nc !== c + irany; nc += irany) {
+                        if (racs[sr][nc] !== "") break;
+                        celC = nc;
+                    }
+                } else {
+                    const irany = r > sr ? 1 : -1;
+                    for (let nr = sr + irany; nr !== r + irany; nr += irany) {
+                        if (racs[nr][sc] !== "") break;
+                        celR = nr;
+                    }
+                }
+
+                racs[celR][celC] = betu;
+            }
+
+            kivalasztott = null;
+            megjelenit();
+        }
+
+        function megjelenit() {
+            const tabla = document.getElementById("racs");
+            tabla.innerHTML = "";
+            const sor0 = racs[0].join("").trim();
+            document.getElementById("kijelolt-hely").textContent = sor0;
+
+            for (let r = 0; r < SOROK; r++) {
+                const tr = document.createElement("tr");
+                for (let c = 0; c < OSZLOPOK; c++) {
+                    const td = document.createElement("td");
+                    const val = racs[r][c];
+                    const kijelolt = kivalasztott && kivalasztott.r === r && kivalasztott.c === c;
+                    let bg = r === 0 ? "#eef4fa" : "#ffffff";
+                    let borderColor = r === 0 ? "#1f3a52" : "#666666";
+
+                    if (r === 0 && c < CEL_SZO.length && val !== "") {
+                        if (val === CEL_SZO[c]) {
+                            bg = "#d4edda";
+                            borderColor = "#28a745";
+                        } else {
+                            bg = "#f8d7da";
+                            borderColor = "#dc3545";
+                        }
+                    }
+
+                    if (kijelolt) {
+                        bg = "#ffe58f";
+                        borderColor = "#d48806";
+                    }
+
+                    td.textContent = val;
+                    td.style.width = "54px";
+                    td.style.height = "54px";
+                    td.style.textAlign = "center";
+                    td.style.verticalAlign = "middle";
+                    td.style.fontSize = "22px";
+                    td.style.fontWeight = "bold";
+                    td.style.cursor = "pointer";
+                    td.style.backgroundColor = bg;
+                    td.style.border = `2px solid ${borderColor}`;
+                    td.onclick = () => kivalasztVagyMozgat(r, c);
+                    tr.appendChild(td);
+                }
+                tabla.appendChild(tr);
+            }
+
+            const allapot = document.getElementById("allapot");
+            const elsoResz = racs[0].slice(0, CEL_SZO.length).join("");
+            if (elsoResz === CEL_SZO) {
+                allapot.style.color = "#1e7e34";
+                allapot.textContent = "Gratulálok! Sikerült kirakni a szót!";
+            } else {
+                const vanHibas = racs[0].slice(0, CEL_SZO.length).some((b, idx) => b !== "" && b !== CEL_SZO[idx]);
+                if (vanHibas) {
+                    allapot.style.color = "#c82333";
+                    allapot.textContent = "Figyelem: a pirossal kiemelt betűk rossz helyen vannak!";
+                } else {
+                    allapot.style.color = "#1f3a52";
+                    allapot.textContent = "";
+                }
+            }
+        }
+
+        ujJatek();
+    </script>
+</body>
+</html>
