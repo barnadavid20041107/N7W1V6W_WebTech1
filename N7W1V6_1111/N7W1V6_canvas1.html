@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <title>Rajzolás a vászonra - N7W1V6</title>
+</head>
+<body>
+    <h1>Rajzolás a vászonra - N7W1V6</h1>
+
+    <canvas id="BLCanvas" width="700" height="350" style="border: 2px solid #333333; background-color: #ffffff;"></canvas>
+
+    <hr>
+    <h3>Források:</h3>
+    <p><a href="https://www.w3schools.com/html/html5_canvas.asp" target="_blank">https://www.w3schools.com/html/html5_canvas.asp</a></p>
+    <p><a href="https://www.w3schools.com/tags/ref_canvas.asp" target="_blank">https://www.w3schools.com/tags/ref_canvas.asp</a></p>
+    <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawImage" target="_blank">https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawImage</a></p>
+
+    <script>
+        const xy = document.getElementById("BLCanvas");
+        const blx = xy.getContext("2d");
+
+        blx.font = "bold 28px Arial";
+        blx.fillStyle = "#f4a226";
+        blx.textAlign = "center";
+        blx.fillText("Mérnökinformatika 2026", xy.width / 2, 42);
+
+        const grad = blx.createRadialGradient(210, 95, 10, 210, 120, 110);
+        grad.addColorStop(0, "#ffd500");
+        grad.addColorStop(0.35, "#ff7b00");
+        grad.addColorStop(0.65, "#5a2dff");
+        grad.addColorStop(1, "#22ff22");
+        blx.fillStyle = grad;
+        blx.fillRect(105, 65, 195, 115);
+
+        blx.strokeStyle = "#0000cc";
+        blx.lineWidth = 4;
+        blx.strokeRect(95, 200, 225, 125);
+
+        blx.beginPath();
+        blx.arc(510, 130, 75, Math.PI * 0.5, Math.PI * 1.5, false);
+        blx.closePath();
+        blx.fillStyle = "#ffff00";
+        blx.fill();
+        blx.strokeStyle = "#000080";
+        blx.lineWidth = 3;
+        blx.stroke();
+
+        const iit = new Image();
+        iit.src = "iit.jpg";
+        iit.onload = function () {
+            const sx = iit.width * 0.35;
+            const sy = iit.height * 0.35;
+            const sw = iit.width * 0.3;
+            const sh = iit.height * 0.65;
+            blx.drawImage(iit, sx, sy, sw, sh, 540, 215, 145, 125);
+        };
+    </script>
+</body>
+</html>

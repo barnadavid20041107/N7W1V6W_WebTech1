@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <title>JSON fájl feldolgozás, beolvasás - JavaScript-ben</title>
+</head>
+<body>
+    <h1>JSON fájl feldolgozás, beolvasás - JavaScript-ben</h1>
+    <p>JSON:</p>
+    <div id="eredmeny"></div>
+
+    <script>
+        const jsonString = '[{"Név":"HTML5","kiterjesztes":".html"},{"Név":"CSS3","kiterjesztes":".css"},{"Név":"JavaScript","kiterjesztes":".js"}]';
+        const objektumTomb = JSON.parse(jsonString);
+
+        let html = "";
+        for (let i = 0; i < objektumTomb.length; i++) {
+            html += "<p>Név: " + objektumTomb[i]["Név"] + ", kiterjesztés: " + objektumTomb[i].kiterjesztes + "</p>";
+        }
+
+        document.getElementById("eredmeny").innerHTML = html;
+    </script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <title>Tömbökön belüli tömbök ciklusa</title>
+</head>
+<body>
+    <h1>Tömbökön belüli tömbök ciklusa</h1>
+    <h2 id="fejlec"></h2>
+    <ul id="autoLista"></ul>
+
+    <script>
+        const N7W1V6Obj = {
+            "name": "N7W1V6",
+            "age": 22,
+            "cars": [
+                { "name": "Toyota", "models": ["CHR", "Corolla", "Proace"] },
+                { "name": "Ford", "models": ["Kuga", "Mondeo", "Mustang"] },
+                { "name": "BMW", "models": ["320", "X3", "X5"] },
+                { "name": "Fiat", "models": ["500", "Panda", "Tipo"] }
+            ]
+        };
+
+        document.getElementById("fejlec").textContent = N7W1V6Obj.name + " (" + N7W1V6Obj.age + ")";
+
+        const ul = document.getElementById("autoLista");
+        for (let i = 0; i < N7W1V6Obj.cars.length; i++) {
+            const markaLi = document.createElement("li");
+            markaLi.textContent = N7W1V6Obj.cars[i].name + ":";
+
+            const modellUl = document.createElement("ul");
+            for (let j = 0; j < N7W1V6Obj.cars[i].models.length; j++) {
+                const modellLi = document.createElement("li");
+                modellLi.textContent = N7W1V6Obj.cars[i].models[j];
+                modellUl.appendChild(modellLi);
+            }
+
+            markaLi.appendChild(modellUl);
+            ul.appendChild(markaLi);
+        }
+    </script>
+</body>
+</html>
